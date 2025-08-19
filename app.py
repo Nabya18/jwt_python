@@ -103,7 +103,7 @@ def _getAllLink():
 
 
 
-@app.route("/api/v1/<int:id>", methods=['GET', 'POST','PUT'])
+@app.route("/api/<int:id>", methods=['GET', 'POST','PUT'])
 def update(id):
     if request.method in ['POST','PUT']:
         # Get form data correctly (should be parentheses, not brackets)
@@ -151,8 +151,46 @@ def update(id):
     except sqlite3.Error as error:
         return render_template('404.html')
 
+@app.route("/api/del/<int:id>", methods=['GET','POST','DELETE'])
+def delete(id):
+    if request.method == ['POST','DELETE']:
+        short_url = request.form.get('short_url')
+        long_url = request.form.get('long_url')
 
+        if not short_url or not long_url:
+            return render_template('404.html', error="Both short_url and long_url are required")
 
+    try:
+        with get_db() as conn:
+            cur = conn.cursor()
+            cur.execute("DELETE FROM urls WHERE id = ?", (id,))
+
+            if cur.rowcount == 0:
+                return render_template('success_delete.html')
+
+            conn.commit()
+
+            cur.execute("SELECT * FROM urls WHERE id = ?", (id,))
+            result = cur.fetchone()
+            if result is None:
+                return render_template('404.html')
+            return render_template('delete.html', error="Failed to delete short URL"
+                                   )
+    except sqlite3.Error as error:
+        print(f"Database error: {error}")
+        return render_template('delete.html', error="Failed to delete short URL")
+
+    # try:
+    #     with get_db() as conn:
+    #         cur = conn.cursor()
+    #         cur.execute("SELECT * FROM urls WHERE id = ?", (id,))
+    #         result = cur.fetchone()
+    #         if result is None:
+    #             return render_template('404.html')
+    #
+    #     return render_template('delete.html', link=result)
+    # except sqlite3.Error as error:
+    #     return render_template('404.html')
 
 @app.route("/l/<short_url>")
 def redirect_short(short_url):

@@ -27,7 +27,8 @@
                 <th>ID</th>
                 <th>Link</th>
                 <th>Short</th>
-                <th>Action</th>
+                <th>Update</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -37,7 +38,10 @@
                 <td>{{ link.long_url }}</td>
                 <td>{{ link.short_url }}</td>
                 <td>
-                    <a href="/api/v1/{{ link.id }}">Update</a>
+                    <a href="/api/{{ link.id }}">Update</a>
+                </td>
+                <td>
+                    <a href="/api/del/{{ link.id }}">Delete</a>
                 </td>
             </tr>
             {% endfor %}
