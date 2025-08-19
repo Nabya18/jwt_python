@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>URL Shortener</title>
+    <style>
+        table, tr, td, th {
+            border: 1px solid black;
+            border-spacing: 0;
+        }
+        td, th {
+            padding: 5px;
+        }
+    </style>
 </head>
 <body>
     <h1>URL Shortener</h1>
@@ -11,5 +20,28 @@
         <input type="text" name="long_url" placeholder="Enter the long URL">
         <button type="submit" name="short_url">Shorten</button>
     </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Link</th>
+                <th>Short</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for link in links %}
+            <tr>
+                <td>{{ link.id }}</td>
+                <td>{{ link.long_url }}</td>
+                <td>{{ link.short_url }}</td>
+                <td>
+                    <a href="/api/v1/{{ link.id }}">Update</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
