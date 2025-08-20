@@ -89,7 +89,7 @@ class SQLiteUrlRepository(UrlRepository):
         with self._get_connection() as conn:
             cur = conn.cursor()
             cur.execute('DELETE FROM urls WHERE id = ?', (url_id,))
-            deleted = cur.rowcount = 0
+            deleted = cur.rowcount > 0
             conn.commit()
             return deleted
 
