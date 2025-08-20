@@ -13,7 +13,34 @@ Python and Flask
 - Clean code structure
 - Using clean architecture
 - Implement login and JWT
+---
+# File Structure
+## models.py - Domain Models and Interfaces
+1. Contains the core business entities (Url, User)
+2. Abstract repository interfaces 
+3. No external dependencies - pure domain logic
 
+## services.py - Business Logic Layer
+1. UrlShortenerService: URL business logic 
+2. AuthService: Authentication business logic 
+3. JWTService: Token management 
+4. Contains all use cases and business rules
+
+## repositories.py - Data Access Layer
+1. SQLiteUrlRepository: Database implementation 
+2. InMemoryAuthRepository: Simple auth storage 
+3. Handles all data persistence concerns
+
+## controllers.py - Web Controllers
+1. UrlController: HTTP request handling for URLs 
+2. AuthController: HTTP request handling for authentication 
+3. Separates web concerns from business logic
+
+## app.py - Application Factory
+1. Flask app creation and configuration 
+2. Dependency injection setup 
+3. Route definitions 
+4. Main entry point
 ---
 Note: Focus on functionality and code readability
 1. url_root = The URL with scheme, host, and root path. For example, https://example.com/app/.
@@ -41,3 +68,6 @@ Note: Focus on functionality and code readability
 | **Key Point** | **All URLs and URNs are URIs**, but not all URIs are URLs or URNs. | A **subset of URI** focused on **where/how** to retrieve. | A **subset of URI** focused on **what** the resource is, not where it lives. |
 
 8. Context managers are the rescue for this issue by automatically managing resources.
+9. RS256 vs HS256 in JWT
+   - HS256 (HMAC with SHA-256) is a symmetric algorithm that shares one secret key between the identity provider and your application. The same key is used to sign a JWT and verify that signature.
+   - RS256 (RSA Signature with SHA-256) is an asymmetric algorithm that uses a private key to sign a JWT and a public key to verify that signature.

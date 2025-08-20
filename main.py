@@ -1,11 +1,11 @@
-from flask import Flask, render_template, request, redirect
-import string
-import random
-import sqlite3
+from flask import (Flask, render_template, request, redirect,
+                   session, make_response, jsonify)
 from contextlib import contextmanager
+from datetime import datetime, timedelta
+from functools import wraps
+import string, random, sqlite3, jwt
 
 app = Flask(__name__)
-
 DATABASE = 'urls.db'
 
 def init_db():
@@ -60,7 +60,7 @@ def is_short_url(short_url):
     except sqlite3.Error as error:
         print(error)
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/l", methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         long_url = request.form['long_url']
@@ -99,9 +99,6 @@ def _getAllLink():
             return []
 
     return result
-
-
-
 
 @app.route("/api/<int:id>", methods=['GET', 'POST','PUT'])
 def update(id):
