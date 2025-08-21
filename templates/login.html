@@ -11,5 +11,43 @@
         <input type="password" name="password" placeholder="Password"> <br>
         <input type="submit" value="Login">
     </form>
+
+<!--    <script>-->
+<!--    // Add this JavaScript to handle JWT token storage-->
+<!--    document.addEventListener('DOMContentLoaded', function() {-->
+<!--        const loginForm = document.querySelector('form'); // Adjust selector if needed-->
+
+<!--        if (loginForm) {-->
+<!--            loginForm.addEventListener('submit', async function(e) {-->
+<!--                e.preventDefault();-->
+
+<!--                const formData = new FormData(this);-->
+
+<!--                try {-->
+<!--                    const response = await fetch('/login', {-->
+<!--                        method: 'POST',-->
+<!--                        body: formData-->
+<!--                    });-->
+
+<!--                    const data = await response.json();-->
+
+<!--                    if (data.token) {-->
+<!--                        // Store the JWT token-->
+<!--                        localStorage.setItem('jwt_token', data.token);-->
+
+<!--                        // Show success message or redirect-->
+<!--                        alert('Login successful!');-->
+<!--                        window.location.href = '/auth'; // Redirect to protected route-->
+<!--                    } else if (data.error) {-->
+<!--                        alert(data.error);-->
+<!--                    }-->
+<!--                } catch (error) {-->
+<!--                    console.error('Login error:', error);-->
+<!--                    alert('Login failed. Please try again.');-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+<!--    });-->
+<!--    </script>-->
 </body>
 </html>

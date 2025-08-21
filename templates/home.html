@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>URL Shortener</title>
+	<style>
+ 	* {
+ 		margin:0;
+ 		padding:0;
+ 	}
+
+	nav {
+		margin:auto;
+		text-align: center;
+		width: 100%;
+		font-family: arial;
+	}
+
+	nav ul {
+		background:#37988e;
+		padding: 0 20px;
+		list-style: none;
+		position: relative;
+		display: inline-table;
+		width: 100%;
+	 }
+
+	nav ul li{
+		float:left;
+	}
+
+	nav ul li:hover{
+		background:#d68d9a;
+	}
+
+	nav ul li:hover a{
+	 	color:#000;
+	}
+
+	nav ul li a{
+	 	display: block;
+	 	padding: 25px;
+	 	color: #fff;
+	 	text-decoration: none;
+	}
+	</style>
+
+</head>
+<body>
+    <form action="/" method="GET">
+       <h1>URL Shortener App</h1>
+        <nav>
+            <ul>
+                <li><a href="/link">Shorten URLs</a></li>
+            </ul>
+        </nav>
+    </form>
+</body>
+</html>

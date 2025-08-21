@@ -1,8 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 import sqlite3
 from contextlib import contextmanager
 from typing import List, Optional
-from models import UrlRepository, Url, AuthRepository
+from cleanArchitecture.models import UrlRepository, Url, AuthRepository
 
 
 class SQLiteUrlRepository(UrlRepository):
@@ -112,5 +112,16 @@ class InMemoryAuthRepository(AuthRepository):
     def __init__(self):
         self.users = {'admin': '123456'}
 
-    def validate_user(self, username: str, password:str) -> bool:
+    def get_user(self, username, password):
+        stored_password = self.users.get(username)
+        if stored_password and stored_password == password:
+            # Return a user dict structure
+            return {
+                'id': '1',
+                'username': username,
+                'password': stored_password
+            }
+        return None
+
+    def validate_user(self, username: str, password: str) -> bool:
         return self.users.get(username) == password

@@ -15,7 +15,7 @@
     </style>
 </head>
 <body>
-    <h1>URL Shortener</h1>
+    <h1>List URL Shortener</h1>
     <form method="POST" action="{{ url_for('index') }}">
         <input type="text" name="long_url" placeholder="Enter the long URL">
         <button type="submit" name="short_url">Shorten</button>
@@ -35,13 +35,17 @@
             {% for link in links %}
             <tr>
                 <td>{{ link.id }}</td>
-                <td>{{ link.long_url }}</td>
-                <td>{{ link.short_url }}</td>
                 <td>
-                    <a href="/api/{{ link.id }}">Update</a>
+                    <a href="{{ link.long_url }}" target="_blank">{{ link.long_url }}</a>
                 </td>
                 <td>
-                    <a href="/api/del/{{ link.id }}">Delete</a>
+                    <a href="/link/{{ link.short_url }}" target="_blank">{{ link.short_url }}</a>
+                </td>
+                <td>
+                    <a href="/link/{{ link.id }}">Update</a>
+                </td>
+                <td>
+                    <a href="/link/del/{{ link.id }}">Delete</a>
                 </td>
             </tr>
             {% endfor %}

@@ -60,7 +60,11 @@ def is_short_url(short_url):
     except sqlite3.Error as error:
         print(error)
 
-@app.route("/l", methods=['GET', 'POST'])
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route("/link", methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         long_url = request.form['long_url']
@@ -100,7 +104,7 @@ def _getAllLink():
 
     return result
 
-@app.route("/api/<int:id>", methods=['GET', 'POST','PUT'])
+@app.route("/link/<int:id>", methods=['GET', 'POST','PUT'])
 def update(id):
     if request.method in ['POST','PUT']:
         # Get form data correctly (should be parentheses, not brackets)
@@ -148,7 +152,7 @@ def update(id):
     except sqlite3.Error as error:
         return render_template('404.html')
 
-@app.route("/api/del/<int:id>", methods=['GET','POST','DELETE'])
+@app.route("/link/del/<int:id>", methods=['GET','POST','DELETE'])
 def delete(id):
     if request.method == ['POST','DELETE']:
         short_url = request.form.get('short_url')
@@ -163,7 +167,7 @@ def delete(id):
             cur.execute("DELETE FROM urls WHERE id = ?", (id,))
 
             if cur.rowcount == 0:
-                return render_template('success_delete.html')
+                return render_template('success.html')
 
             conn.commit()
 
@@ -189,7 +193,7 @@ def delete(id):
     # except sqlite3.Error as error:
     #     return render_template('404.html')
 
-@app.route("/l/<short_url>")
+@app.route("/link/<short_url>")
 def redirect_short(short_url):
     try:
         with get_db() as conn:

@@ -50,7 +50,7 @@ class UrlController:
                 if not updated_url:
                     return render_template('404.html')
 
-                return render_template('update.html', link=updated_url, success=f"Short URL updated: {short_url}")
+                return render_template('success.html', link=updated_url, success=f"Short URL updated: {short_url}")
 
             except ValueError as e:
                 url = self.url_service.get_url_by_id(url_id)
@@ -69,7 +69,7 @@ class UrlController:
     def delete(self, url_id: int):
         try:
             if self.url_service.delete_url(url_id):
-                return render_template('success_delete.html')
+                return render_template('success.html')
             else:
                 return render_template('404.html', error="URL not found")
         except Exception as e:
@@ -90,8 +90,12 @@ class AuthController:
 
             token = self.auth_service.authenticate(username, password)
             if token:
-                session['logged_in'] = True
-                return jsonify({'token': token})
+                # Remove session since JWT handles state
+                # session['logged_in'] = True
+                return jsonify({
+                    'message': 'Login successful',
+                    'token': token
+                })
             else:
                 return jsonify({'error': 'Invalid username or password'})
 

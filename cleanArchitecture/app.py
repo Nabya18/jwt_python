@@ -2,7 +2,7 @@ from flask import Flask
 from repositories import SQLiteUrlRepository, InMemoryAuthRepository
 from services import UrlShortenerService, AuthService, JWTService
 from controllers import UrlController, AuthController, create_token_required_decorator
-
+from utils import create_token_required_decorator
 
 def create_app(config=None):
     app = Flask(__name__)
@@ -39,7 +39,6 @@ def create_app(config=None):
         return auth_controller.public()
 
     @app.route('/auth')
-    @token_required
     def auth():
         return auth_controller.protected()
 
@@ -47,19 +46,19 @@ def create_app(config=None):
     def login():
         return auth_controller.login()
 
-    @app.route('/l', methods=['GET', 'POST'])
+    @app.route('/link', methods=['GET', 'POST'])
     def index():
         return url_controller.index()
 
-    @app.route('/l/<short_url>')
+    @app.route('/link/<short_url>')
     def redirect_short(short_url):
         return url_controller.redirect_short(short_url)
 
-    @app.route('/api/<int:url_id>', methods=['GET', 'POST', 'PUT'])
+    @app.route('/link/<int:url_id>', methods=['GET', 'POST', 'PUT'])
     def update(url_id):
         return url_controller.update(url_id)
 
-    @app.route('/api/del/<int:url_id>', methods=['GET', 'POST', 'DELETE'])
+    @app.route('/link/del/<int:url_id>', methods=['GET', 'POST', 'DELETE'])
     def delete(url_id):
         return url_controller.delete(url_id)
 

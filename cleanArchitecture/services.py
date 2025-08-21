@@ -1,6 +1,6 @@
 import random, string, jwt
 from typing import Optional, List
-from models import UrlRepository, Url, AuthRepository
+from cleanArchitecture.models import UrlRepository, Url, AuthRepository
 from datetime import datetime, timedelta
 
 
@@ -8,9 +8,9 @@ class UrlShortenerService:
     def __init__(self, url_repository: UrlRepository):
         self.url_repository = url_repository
 
-    def create_short_url(self, long_url: str) -> Url:
+    def create_short_url(self, url_id: int, short_url:str, long_url:str) -> Optional[Url]:
         short_url = self._generate_unique_short_url()
-        url = Url(id=None, long_url=long_url, short_url=short_url)
+        url = Url(id=url_id, long_url=long_url, short_url=short_url)
         return self.url_repository.save(url)
 
     def get_long_url(self, short_url: str) -> Optional[str]:
@@ -46,9 +46,17 @@ class AuthService:
         self.auth_repository = auth_repository
         self.jwt_service = jwt_service
 
-    def authenticate(self, username: str, password: str) -> Optional[Url]:
-        if self.auth_repository.validate_user(username, password):
-            return self.jwt_service.generate_token(username)
+    def authenticate(self, username, password):
+        # Validate user credentials
+        user = self.auth_repository.get_user(username, password)
+        if user:
+            # Generate JWT token
+            user_data = {
+                'id': user['id'],
+                'username': user['username']
+            }
+            token = self.jwt_service.generate_token(user_data)
+            return token
         return None
 
     def validate_token(self, token: str) -> Optional[str]:
@@ -69,6 +77,8 @@ class JWTService:
     def validate_token(self, token: str) -> Optional[str]:
         try:
             payload = jwt.decode(token, self.secret_key, algorithms=['HS256'])
-            return payload.get('user')
+            return payload
+        except jwt.ExpiredSignatureError:
+            raise Exception('Token expired')
         except jwt.InvalidTokenError:
-            return None
+            raise Exception('Invalid token')

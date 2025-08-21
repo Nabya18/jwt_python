@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>URL Shortener</h1>
-    <form action="/api/{{ link.id }}" method="POST">
+    <form action="/link/{{ link.id }}" method="POST">
         <input type="hidden" name="_method" value="PUT">
         <input type="text" name="long_url" placeholder="URL" value="{{ link.long_url }}">
         <input type="text" name="short_url" placeholder="short url" value="{{ link.short_url }}">

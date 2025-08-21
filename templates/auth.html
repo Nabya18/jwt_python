@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Protected Area</title>
+</head>
+<body>
+    <form action="/auth">
+        <h1>Welcome to Protected Area!</h1>
+        <p>You are successfully authenticated with JWT.</p>
+        <a href="/link">Go to URL Shortener</a>
+        <button onclick="logout()">Logout</button>
+    </form>
+    <script>
+    function logout() {
+        localStorage.removeItem('jwt_token');
+        window.location.href = '/login';
+    }
+    </script>
+</body>
+</html>
